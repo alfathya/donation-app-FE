@@ -1,1 +1,0 @@
-netlify link: https://donate-love.netlify.app/
