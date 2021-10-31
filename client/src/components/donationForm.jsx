@@ -5,6 +5,7 @@ import * as yup from "yup";
 import Swal from 'sweetalert2'
 import { useHistory } from 'react-router';
 import axios from 'axios'
+import Loading from './loading/loading'
 
 
 yup.addMethod(yup.string , "NRIC" ,function(error) {
@@ -61,17 +62,20 @@ function DonationForm() {
     const[form, setForm] = useState({})
     const [isSubmit,setIsSubmit] = useState(false)
     const history = useHistory()
+    const [loading, setLoading] = useState(false)
 
     const submit = async(data) => {
         try {
             setForm(data)
             setIsSubmit(true)
+            setLoading(true)
             const donation = await axios({
                 method:"POST",
                 url: "https://care-donation.herokuapp.com/contact",
                 data:data
             })
             localStorage.setItem("donate", "submitted")
+            setLoading(false)
             history.push('/thanks')
             Swal.fire({
                 icon : 'success',
@@ -151,6 +155,7 @@ function DonationForm() {
                         </div>
                     </form>
                 </div>
+            {loading ? <Loading/> : null}
             </div>
         </div>
     )
